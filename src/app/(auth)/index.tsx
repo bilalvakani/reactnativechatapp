@@ -1,11 +1,31 @@
 
 import { View, Text, StyleSheet, SafeAreaView, Image, ActivityIndicator } from 'react-native'; // Added StyleSheet import
-import React, { useState } from 'react';
-import { Link } from 'expo-router';
+import React, { useEffect, useState } from 'react';
+import { Link, router } from 'expo-router';
 import imagePath from '@/src/constants/imagePath';
 
 const Auth = () => {
-  const [isLoading, setIsLoading]=useState(true);
+  const [isLoading, setIsLoading]=useState(false);
+
+  let loading_timeout=()=>{
+    setIsLoading(true)
+    setTimeout(navigate_to_welcome,3000);
+  }
+
+  let navigate_to_welcome =()=>{
+   router.push("/(auth)/terms_agree")
+  }
+
+  useEffect(()=>{
+    const timeout=  setTimeout(loading_timeout,2000);
+  
+  return()=>{
+    clearTimeout(timeout)
+  }
+  },[]);
+
+
+
   return (
     <SafeAreaView style={styles.container}>
      <View style={styles.header}></View>
@@ -17,7 +37,8 @@ const Auth = () => {
       {
         isLoading ? (
           <>
-          <ActivityIndicator/>
+          <ActivityIndicator size={49}/>
+          <Text style={styles.loading_text}>Loading...</Text>
           
           </>
         ):(
@@ -62,6 +83,11 @@ fontSize:15,
   width:220,
   height:200,
   borderRadius:10,
+  },
+  loading_text:{
+    fontSize:20,
+    color:"#2980b9",
+    fontWeight:"bold"
   }
 });
 
